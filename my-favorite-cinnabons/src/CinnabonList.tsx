@@ -21,33 +21,61 @@ const CinnabonList: React.FC<Props> = ({ cinnabons }) => {
 			minHeight: '100vh',
 			backgroundColor: '#000'
 		}}>
-			<h1 style={{ marginBottom: '5px', fontSize: '2.5em', color: 'white' }}>Cinnaboard</h1>
+			<h1 style={{ marginBottom: '5px', fontFamily: 'Fira Sans, sans-serif', fontSize: '2.5em', color: 'white' }}>Cinnaboard</h1>
 			<div style={{ marginBottom: '30px', color: 'white' }}>My Favorite Cinnabons Worldwide</div>
 			<ul style={{
-				borderRadius: '12px',
-				backgroundColor: 'rgba(255, 255, 255, 0.2)',
-				border: '1px solid #ccc',
 				paddingInlineStart: '0px',
 				width: '100%',
 				maxWidth: '1000px'
 			}}>
 				{cinnabons.map((cinnabon, index) => (
 					<li key={index} style={{
-						padding: '30px',
 						display: 'flex',
+						fontFamily: 'Fira Sans, sans-serif',
 						justifyContent: 'space-between',
-						alignItems: 'center',
-						borderBottom: index === cinnabons.length - 1 ? 'none' : '1px solid #ccc'
+						alignItems: 'stretch',
+						backgroundColor: '#F0ECEB',
+						marginBottom: '2px',
 					}}>
-						<div>
-							<a href={`https://www.google.com/maps/search/?api=1&query=${cinnabon.location}`} target="_blank" rel="noopener noreferrer" style={{ color: 'white', textDecoration: 'none' }}>
-								<div style={{ fontSize: '1.5em', fontWeight: 'bold' }}>{cinnabon.name}</div>
+						<div style={{
+							backgroundColor: 'white',
+							width: '120px',
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center'
+						}}>
+							<div style={{
+								fontFamily: 'Fira Sans, sans-serif',
+								fontWeight: 'extra-bold',
+								fontSize: '4em',
+								color: '#351409',
+							}}>
+								{index + 1}
+							</div>
+						</div>
+
+						<div style={{
+							padding: '32px',
+							backgroundColor: '#F0ECEB',
+							flexGrow: 9,
+							textAlign: 'left',
+						}}>
+
+							<a href={`https://www.google.com/maps/search/?api=1&query=${cinnabon.location}`} target="_blank" rel="noopener noreferrer" style={{ color: '#351409', textDecoration: 'none' }}>
+								<div style={{ fontSize: '1.5em', fontWeight: 'bold', paddingBottom:'10px' }}>{cinnabon.name}</div>
 								<div>
 									{cinnabon.location}
 								</div>
 							</a>
 						</div>
-						<StarRating rating={cinnabon.rating} /> {/* Use the StarRating component */}
+						<div style={{
+							display: 'flex',
+							alignItems: 'center',
+							paddingRight: '20px',
+							flexGrow: 1,  // Add this
+						}}>
+							<StarRating rating={cinnabon.rating} /> {/* Use the StarRating component */}
+						</div>
 					</li>
 				))}
 			</ul>
