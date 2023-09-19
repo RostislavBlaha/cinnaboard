@@ -20,7 +20,10 @@ const FilterComponent: React.FC<FilterProps> = ({ countries, selectedCountries, 
 		<div style={{
 			fontFamily: 'Fira Sans, sans-serif',
 			fontSize: '1.5em',
-			color: 'white'
+			color: 'white',
+			textAlign: 'center',
+			paddingLeft:'8px',
+			paddingRight:'8px',
 		}}>
 			<span>Cinnabons in </span>
 			{displayCountries.map((country, index) => (

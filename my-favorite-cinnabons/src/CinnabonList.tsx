@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import StarRating from './StarRating';
 import FilterComponent from './FilterComponent';
 import bottomLeftCinnabon from './bottom-left-cinnabon.png';
@@ -19,6 +19,14 @@ type Props = {
 const CinnabonList: React.FC<Props> = ({ cinnabons,countries }) => {
 	const [selectedCountries, setSelectedCountries] = useState<string[]>(countries);
 	const [order, setOrder] = useState<'most' | 'least'>('most');
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+	useEffect(() => {
+		const handleResize = () => setWindowWidth(window.innerWidth);
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
+
 
 	const onSelectCountry = (country: string) => {
 		setSelectedCountries(prev => prev.includes(country) ? prev.filter(c => c !== country) : [...prev, country]);
@@ -64,15 +72,17 @@ const CinnabonList: React.FC<Props> = ({ cinnabons,countries }) => {
 				{filteredCinnabons.map((cinnabon, index) => (
 					<li key={index} style={{
 						display: 'flex',
+						flexDirection: windowWidth <= 1000 ? 'column' : 'row',
 						fontFamily: 'Fira Sans, sans-serif',
 						justifyContent: 'space-between',
 						alignItems: 'stretch',
 						backgroundColor: '#F0ECEB',
 						marginBottom: '2px',
+						padding: windowWidth <= 1000 ? '32px':'0px',
 					}}>
 						<div style={{
-							backgroundColor: 'white',
-							width: '120px',
+							backgroundColor: windowWidth <= 1000 ? '' : 'white',
+							width: windowWidth <= 1000 ? '100%' : '120px',
 							display: 'flex',
 							alignItems: 'center',
 							justifyContent: 'center'
@@ -88,13 +98,17 @@ const CinnabonList: React.FC<Props> = ({ cinnabons,countries }) => {
 						</div>
 
 						<div style={{
-							padding: '32px',
+							padding: windowWidth <= 1000 ? '0px':'32px',
 							backgroundColor: '#F0ECEB',
 							flexGrow: 9,
 							textAlign: 'left',
 						}}>
 
-							<a href={`https://www.google.com/maps/search/?api=1&query=${cinnabon.location}`} target="_blank" rel="noopener noreferrer" style={{ color: '#351409', textDecoration: 'none' }}>
+							<a href={`https://www.google.com/maps/search/?api=1&query=${cinnabon.location}`} target="_blank" rel="noopener noreferrer" style={{
+								color: '#351409',
+								textDecoration: 'none',
+								textAlign: 	windowWidth <= 1000 ? 'center' : 'left',
+							}}>
 								<div style={{ fontSize: '1.5em', fontWeight: 'bold', paddingBottom:'10px' }}>{cinnabon.name}</div>
 								<div>
 									{cinnabon.location}
@@ -106,8 +120,10 @@ const CinnabonList: React.FC<Props> = ({ cinnabons,countries }) => {
 							alignItems: 'center',
 							paddingRight: '20px',
 							flexGrow: 1,
+							justifyContent: windowWidth <= 1000 ? 'center' : 'flex-end',
+							paddingBottom: windowWidth <= 1000 ? '32px' : '0px',
 						}}>
-							<StarRating rating={cinnabon.rating} /> {/* Use the StarRating component */}
+							<StarRating rating={cinnabon.rating} />
 						</div>
 					</li>
 				))}
