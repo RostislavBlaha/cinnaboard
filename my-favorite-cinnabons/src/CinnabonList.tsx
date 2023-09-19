@@ -1,9 +1,11 @@
-import React from 'react';
-import StarRating from './StarRating'; // Import the StarRating component
+import React, { useState } from 'react';
+import StarRating from './StarRating';
+import FilterComponent from './FilterComponent';
 
 type Cinnabon = {
 	name: string;
 	location: string;
+	country: string;
 	rating: number;
 };
 
@@ -12,6 +14,26 @@ type Props = {
 };
 
 const CinnabonList: React.FC<Props> = ({ cinnabons }) => {
+	const [selectedCountries, setSelectedCountries] = useState<string[]>(['Czechia', 'Iceland']);
+	const [order, setOrder] = useState<'most' | 'least'>('most');
+	const countries = ['Czechia', 'Iceland'];
+
+	const onSelectCountry = (country: string) => {
+		setSelectedCountries(prev => prev.includes(country) ? prev.filter(c => c !== country) : [...prev, country]);
+	};
+
+	const toggleOrder = () => {
+		setOrder(prev => prev === 'most' ? 'least' : 'most');
+	};
+
+
+	const filteredCinnabons = [...cinnabons]
+		.filter(c => selectedCountries.includes(c.country))
+		.sort((a, b) => order === 'most' ? b.rating - a.rating : a.rating - b.rating);
+
+
+
+
 	return (
 		<div style={{
 			display: 'flex',
@@ -22,13 +44,19 @@ const CinnabonList: React.FC<Props> = ({ cinnabons }) => {
 			backgroundColor: '#000'
 		}}>
 			<h1 style={{ marginBottom: '5px', fontFamily: 'Fira Sans, sans-serif', fontSize: '2.5em', color: 'white' }}>Cinnaboard</h1>
-			<div style={{ marginBottom: '30px', color: 'white' }}>My Favorite Cinnabons Worldwide</div>
+			<FilterComponent
+				countries={countries}
+				selectedCountries={selectedCountries}
+				order={order}
+				onSelectCountry={onSelectCountry}
+				toggleOrder={toggleOrder}
+			/>
 			<ul style={{
 				paddingInlineStart: '0px',
 				width: '100%',
 				maxWidth: '1000px'
 			}}>
-				{cinnabons.map((cinnabon, index) => (
+				{filteredCinnabons.map((cinnabon, index) => (
 					<li key={index} style={{
 						display: 'flex',
 						fontFamily: 'Fira Sans, sans-serif',
@@ -46,11 +74,11 @@ const CinnabonList: React.FC<Props> = ({ cinnabons }) => {
 						}}>
 							<div style={{
 								fontFamily: 'Fira Sans, sans-serif',
-								fontWeight: 'extra-bold',
+								fontWeight: '900',
 								fontSize: '4em',
 								color: '#351409',
 							}}>
-								{index + 1}
+								{cinnabons.indexOf(cinnabon) + 1}
 							</div>
 						</div>
 
@@ -72,7 +100,7 @@ const CinnabonList: React.FC<Props> = ({ cinnabons }) => {
 							display: 'flex',
 							alignItems: 'center',
 							paddingRight: '20px',
-							flexGrow: 1,  // Add this
+							flexGrow: 1,
 						}}>
 							<StarRating rating={cinnabon.rating} /> {/* Use the StarRating component */}
 						</div>
