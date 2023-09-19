@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import StarRating from './StarRating';
 import FilterComponent from './FilterComponent';
+import bottomLeftCinnabon from './bottom-left-cinnabon.png';
+import bottomRightCinnabon from './bottom-right-cinnabon.png';
 
 type Cinnabon = {
 	name: string;
@@ -11,12 +13,12 @@ type Cinnabon = {
 
 type Props = {
 	cinnabons: Cinnabon[];
+	countries: string[];
 };
 
-const CinnabonList: React.FC<Props> = ({ cinnabons }) => {
-	const [selectedCountries, setSelectedCountries] = useState<string[]>(['Czechia', 'Iceland']);
+const CinnabonList: React.FC<Props> = ({ cinnabons,countries }) => {
+	const [selectedCountries, setSelectedCountries] = useState<string[]>(countries);
 	const [order, setOrder] = useState<'most' | 'least'>('most');
-	const countries = ['Czechia', 'Iceland'];
 
 	const onSelectCountry = (country: string) => {
 		setSelectedCountries(prev => prev.includes(country) ? prev.filter(c => c !== country) : [...prev, country]);
@@ -39,19 +41,22 @@ const CinnabonList: React.FC<Props> = ({ cinnabons }) => {
 			display: 'flex',
 			flexDirection: 'column',
 			alignItems: 'center',
-			justifyContent: 'center',
 			minHeight: '100vh',
-			backgroundColor: '#000'
+			backgroundColor: '#0A0605',
+			backgroundImage: `url(${bottomLeftCinnabon}), url(${bottomRightCinnabon})`,
+			backgroundRepeat: 'no-repeat, no-repeat',
+			backgroundPosition: 'left bottom, right bottom',
+			backgroundAttachment: 'fixed',
 		}}>
-			<h1 style={{ marginBottom: '5px', fontFamily: 'Fira Sans, sans-serif', fontSize: '2.5em', color: 'white' }}>Cinnaboard</h1>
+			<h1 style={{ marginBottom: '16px', paddingTop: '48px', fontFamily: 'Lemon, sans-serif', fontSize: '3em', color: 'white' }}>Cinnaboard</h1>
 			<FilterComponent
 				countries={countries}
 				selectedCountries={selectedCountries}
-				order={order}
 				onSelectCountry={onSelectCountry}
 				toggleOrder={toggleOrder}
 			/>
 			<ul style={{
+				paddingTop: '48px',
 				paddingInlineStart: '0px',
 				width: '100%',
 				maxWidth: '1000px'
@@ -107,6 +112,25 @@ const CinnabonList: React.FC<Props> = ({ cinnabons }) => {
 					</li>
 				))}
 			</ul>
+			<div
+				style={{
+					paddingTop: "16px",
+					paddingBottom: "32px",
+					fontSize: "1em",
+					fontFamily: 'Fira Sans, sans-serif',
+					color: "white",
+				}}
+			>
+				designed and developed by{" "}
+				<a
+					href="https://rostislavblaha.cz"
+					target="_blank"
+					rel="noopener noreferrer"
+					style={{ color: 'white', textDecoration: 'none', fontWeight: 'bold'}}
+				>
+					Rostislav Blaha
+				</a>
+			</div>
 		</div>
 	);
 };

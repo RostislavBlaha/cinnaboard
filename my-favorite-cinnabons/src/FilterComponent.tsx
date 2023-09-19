@@ -3,12 +3,11 @@ import React, { useState, useEffect } from 'react';
 type FilterProps = {
 	countries: string[];
 	selectedCountries: string[];
-	order: 'most' | 'least';
 	onSelectCountry: (country: string) => void;
 	toggleOrder: () => void;
 };
 
-const FilterComponent: React.FC<FilterProps> = ({ countries, selectedCountries, order, onSelectCountry, toggleOrder }) => {
+const FilterComponent: React.FC<FilterProps> = ({ countries, selectedCountries, onSelectCountry, toggleOrder }) => {
 	const [displayCountries, setDisplayCountries] = useState<string[]>([]);
 	const [isLeastToMost, setIsLeastToMost] = useState(false);
 	const [playAnimation, setPlayAnimation] = useState(false);
@@ -32,7 +31,8 @@ const FilterComponent: React.FC<FilterProps> = ({ countries, selectedCountries, 
 					>
 						<strong>{country}</strong>
 					</span>
-					{index !== displayCountries.length - 1 && ' and '}
+					{index < displayCountries.length - 2 && ', '}
+					{index === displayCountries.length - 2 && ' and '}
 				</span>
 			))}
 			<span> ordered from my </span>
@@ -49,7 +49,7 @@ const FilterComponent: React.FC<FilterProps> = ({ countries, selectedCountries, 
 				<strong className={playAnimation ? 'order-word' : ''} id="most">{isLeastToMost ? 'least' : 'most'}</strong>
 				<span>{' to '}</span>
 				<strong className={playAnimation ? 'order-word' : ''} id="least">{isLeastToMost ? 'most' : 'least'}</strong>
-				<span>{' favorite.'}</span>
+				<span>{' favorite'}</span>
 			</span>
 		</div>
 	);

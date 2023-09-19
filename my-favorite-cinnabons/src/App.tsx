@@ -14,9 +14,10 @@ const cinnabons = [
 
 
 function App() {
+	const countries = Array.from(new Set(cinnabons.map(cinnabon => cinnabon.country)));
 	return (
 		<div className="App">
-			<CinnabonList cinnabons={cinnabons} />
+			<CinnabonList cinnabons={cinnabons} countries={countries}/>
 		</div>
 	);
 }
