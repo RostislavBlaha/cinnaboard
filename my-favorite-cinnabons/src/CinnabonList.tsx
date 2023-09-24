@@ -26,6 +26,11 @@ const CinnabonList: React.FC<Props> = ({ cinnabons,countries }) => {
 		window.addEventListener("resize", handleResize);
 		return () => window.removeEventListener("resize", handleResize);
 	}, []);
+	useEffect(() =>{
+		if (countries.length > 0) {
+			setSelectedCountries(countries);
+		}
+	}, [countries])
 
 
 	const onSelectCountry = (country: string) => {

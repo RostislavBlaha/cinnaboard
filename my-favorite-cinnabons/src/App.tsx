@@ -1,20 +1,37 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import CinnabonList from './CinnabonList';
 
-const cinnabons = [
-	{ name: 'Brauð & co.', location: '16 Frakkastígur, 101 Reykjavík', country: 'Iceland', rating: 10 },
-	{ name: 'Café Pilot', location: 'Dačického 1225/8, 140 00 Praha 4-Nusle', country: 'Czechia', rating: 8 },
-	{ name: 'Eaternia', location: 'Nádražní 349/3, 150 00 Praha 5-Smíchov', country: 'Czechia', rating: 8 },
-	{ name: 'U Kalendů (Babka)', location: 'Rašínovo nábř. 383/58, 128 00 Nové Město', country: 'Czechia', rating: 7 },
-	{ name: 'Tady a teď', location: 'Na Bělidle 31, 150 00 Praha 5-Smíchov', country: 'Czechia', rating: 6 },
-	{ name: 'Artic Bakehouse', location: 'Štefánikova 31, 150 00 Praha 5-Smíchov', country: 'Czechia', rating: 4.5 },
-	{ name: 'Delmart', location: 'Nádražní 344, 150 00 Praha 5-Anděl', country: 'Czechia', rating: 3 }
-];
 
+type Cinnabon = {
+	name: string;
+	location: string;
+	country: string;
+	rating: number;
+};
 
 function App() {
-	const countries = Array.from(new Set(cinnabons.map(cinnabon => cinnabon.country)));
+	const [cinnabons, setCinnabons] = useState<Cinnabon[]>([]);
+	const [countries, setCountries] = useState<string[]>([]);
+
+	useEffect(() => {
+		fetch('http://localhost:3000/cinnabons.json')
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Network response was not ok' + response.statusText);
+				}
+				return response.json();
+			})
+			.then(data => {
+				setCinnabons(data);
+				// Set countries using the fetched data instead of the cinnabons state
+				const uniqueCountries: string[] = Array.from(new Set(data.map((cinnabon: Cinnabon) => cinnabon.country)));
+				setCountries(uniqueCountries);
+			})
+			.catch(error => console.error('Error fetching the cinnabons data', error));
+	}, []);
+
+
 	return (
 		<div className="App">
 			<CinnabonList cinnabons={cinnabons} countries={countries}/>

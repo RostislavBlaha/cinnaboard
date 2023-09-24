@@ -2,7 +2,6 @@
     background-color: black;
 }
 
-/* For crossing-out animation */
 .cross-out {
     position: relative;
     cursor: pointer;
@@ -13,25 +12,23 @@
     position: absolute;
     top: 50%;
     left: 0;
-    right: 0;
     height: 4px;
     background: white;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    width: 0; /* Added */
+    transform-origin: left center; /* Added */
+    transition: width 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Modified */
 }
 
-.cross-out:hover::before {
-    opacity: 1;
-}
-
+.cross-out:hover::before,
 .cross-out.selected::before {
+    width: 100%; /* Added */
     opacity: 1;
 }
 
-/* For switching words animation */
 .order-word {
     display: inline-block;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease-in-out; /* Modified */
 }
 
 span.switch-order {
@@ -39,12 +36,9 @@ span.switch-order {
 }
 
 .switched #most {
-    transform: translateX(calc(100% + 35px)); /* Adjust the percentage and extra pixels as needed */
+    transform: translateX(calc(100% + 35px));
 }
 
 .switched #least {
-    transform: translateX(calc(-100% - 35px)); /* Adjust the percentage and extra pixels as needed */
+    transform: translateX(calc(-100% - 35px));
 }
-
-
-
