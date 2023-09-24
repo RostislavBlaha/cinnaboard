@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 import CinnabonList from './CinnabonList';
+import Loader from "./Loader";
+import bottomLeftCinnabon from "./bottom-left-cinnabon.png";
+import bottomRightCinnabon from "./bottom-right-cinnabon.png";
 
 
 type Cinnabon = {
@@ -13,6 +16,7 @@ type Cinnabon = {
 function App() {
 	const [cinnabons, setCinnabons] = useState<Cinnabon[]>([]);
 	const [countries, setCountries] = useState<string[]>([]);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		fetch('http://localhost:3000/cinnabons.json')
@@ -24,9 +28,9 @@ function App() {
 			})
 			.then(data => {
 				setCinnabons(data);
-				// Set countries using the fetched data instead of the cinnabons state
 				const uniqueCountries: string[] = Array.from(new Set(data.map((cinnabon: Cinnabon) => cinnabon.country)));
 				setCountries(uniqueCountries);
+				setLoading(false);
 			})
 			.catch(error => console.error('Error fetching the cinnabons data', error));
 	}, []);
@@ -34,7 +38,41 @@ function App() {
 
 	return (
 		<div className="App">
+			<div style={{
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'center',
+				minHeight: '100vh',
+				backgroundColor: '#0A0605',
+				backgroundImage: `url(${bottomLeftCinnabon}), url(${bottomRightCinnabon})`,
+				backgroundRepeat: 'no-repeat, no-repeat',
+				backgroundPosition: 'left bottom, right bottom',
+				backgroundAttachment: 'fixed',
+			}}>
+				<h1 style={{ marginBottom: '16px', paddingTop: '48px', fontFamily: 'Lemon, sans-serif', fontSize: '3em', color: 'white' }}>Cinnaboard</h1>
+			{loading && <Loader/>}
 			<CinnabonList cinnabons={cinnabons} countries={countries}/>
+				<div
+					style={{
+						paddingTop: "16px",
+						paddingBottom: "32px",
+						fontSize: "1em",
+						fontFamily: 'Fira Sans, sans-serif',
+						color: "white",
+					}}
+				>
+					designed and developed by{" "}
+					<a
+						href="https://rostislavblaha.cz"
+						target="_blank"
+						rel="noopener noreferrer"
+						style={{ color: 'white', textDecoration: 'none', fontWeight: 'bold'}}
+					>
+						Rostislav Blaha
+					</a>
+				</div>
+			</div>
+
 		</div>
 	);
 }

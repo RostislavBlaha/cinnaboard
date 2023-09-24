@@ -1,0 +1,15 @@
+.loader {
+    animation: spin 2s linear infinite;
+    transform: scale(0.5);
+    transform-origin: center;
+    transform-box: fill-box;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg) scale(0.5);
+    }
+    100% {
+        transform: rotate(360deg) scale(0.5);
+    }
+}

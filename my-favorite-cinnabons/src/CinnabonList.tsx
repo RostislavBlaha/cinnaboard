@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import StarRating from './StarRating';
 import FilterComponent from './FilterComponent';
-import bottomLeftCinnabon from './bottom-left-cinnabon.png';
-import bottomRightCinnabon from './bottom-right-cinnabon.png';
 
 type Cinnabon = {
 	name: string;
@@ -20,6 +18,7 @@ const CinnabonList: React.FC<Props> = ({ cinnabons,countries }) => {
 	const [selectedCountries, setSelectedCountries] = useState<string[]>(countries);
 	const [order, setOrder] = useState<'most' | 'least'>('most');
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
 
 	useEffect(() => {
 		const handleResize = () => setWindowWidth(window.innerWidth);
@@ -50,24 +49,13 @@ const CinnabonList: React.FC<Props> = ({ cinnabons,countries }) => {
 
 
 	return (
-		<div style={{
-			display: 'flex',
-			flexDirection: 'column',
-			alignItems: 'center',
-			minHeight: '100vh',
-			backgroundColor: '#0A0605',
-			backgroundImage: `url(${bottomLeftCinnabon}), url(${bottomRightCinnabon})`,
-			backgroundRepeat: 'no-repeat, no-repeat',
-			backgroundPosition: 'left bottom, right bottom',
-			backgroundAttachment: 'fixed',
-		}}>
-			<h1 style={{ marginBottom: '16px', paddingTop: '48px', fontFamily: 'Lemon, sans-serif', fontSize: '3em', color: 'white' }}>Cinnaboard</h1>
-			<FilterComponent
-				countries={countries}
-				selectedCountries={selectedCountries}
-				onSelectCountry={onSelectCountry}
-				toggleOrder={toggleOrder}
-			/>
+		<>
+	<FilterComponent
+					countries={countries}
+					selectedCountries={selectedCountries}
+					onSelectCountry={onSelectCountry}
+					toggleOrder={toggleOrder}
+				/>
 			<ul style={{
 				paddingTop: '48px',
 				paddingInlineStart: '0px',
@@ -133,26 +121,7 @@ const CinnabonList: React.FC<Props> = ({ cinnabons,countries }) => {
 					</li>
 				))}
 			</ul>
-			<div
-				style={{
-					paddingTop: "16px",
-					paddingBottom: "32px",
-					fontSize: "1em",
-					fontFamily: 'Fira Sans, sans-serif',
-					color: "white",
-				}}
-			>
-				designed and developed by{" "}
-				<a
-					href="https://rostislavblaha.cz"
-					target="_blank"
-					rel="noopener noreferrer"
-					style={{ color: 'white', textDecoration: 'none', fontWeight: 'bold'}}
-				>
-					Rostislav Blaha
-				</a>
-			</div>
-		</div>
+		</>
 	);
 };
 
